@@ -3,30 +3,30 @@ use std::path::{Path, PathBuf};
 use toml_edit::{Decor, Document, Item, Table, Value};
 
 fn resolve_config_path(platform: Option<&str>) -> Result<PathBuf> {
-    let root_dir = PathBuf::from(std::env!("AX_WORK_DIR"));
+    let root_dir = PathBuf::from(option_env!("AX_WORK_DIR").unwrap_or(""));
     let config_dir = root_dir.join("platforms");
-    println!("config_dir: {:?}", config_dir);
-    let builtin_platforms = std::fs::read_dir(&config_dir)?
-        .filter_map(|e| {
-            e.unwrap()
-                .file_name()
-                .to_str()?
-                .strip_suffix(".toml")
-                .map(String::from)
-        })
-        .collect::<Vec<_>>();
 
     let path = match platform {
         None | Some("") => "defconfig.toml".into(),
-        Some(plat) if builtin_platforms.contains(&plat.to_string()) => {
-            config_dir.join(format!("{plat}.toml"))
-        }
         Some(plat) => {
-            let path = PathBuf::from(&plat);
-            if path.is_absolute() {
-                path
+            let builtin_platforms = std::fs::read_dir(&config_dir)?
+                .filter_map(|e| {
+                    e.unwrap()
+                        .file_name()
+                        .to_str()?
+                        .strip_suffix(".toml")
+                        .map(String::from)
+                })
+                .collect::<Vec<_>>();
+            if builtin_platforms.contains(&plat.to_string()) {
+                config_dir.join(format!("{plat}.toml"))
             } else {
-                root_dir.join(plat)
+                let path = PathBuf::from(&plat);
+                if path.is_absolute() {
+                    path
+                } else {
+                    root_dir.join(plat)
+                }
             }
         }
     };
