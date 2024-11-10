@@ -3,7 +3,10 @@ use std::path::{Path, PathBuf};
 use toml_edit::{Decor, DocumentMut, Item, Table, Value};
 
 fn resolve_config_path(platform: Option<&str>) -> Result<PathBuf> {
-    let root_dir = PathBuf::from(std::env!("AX_WORK_DIR"));
+    if platform.is_none() || platform == Some("") {
+        return Ok(Path::new("defconfig.toml").into());
+    }
+    let root_dir = PathBuf::from(option_env!("AX_WORK_DIR").unwrap_or("."));
     let config_dir = root_dir.join("platforms");
 
     let builtin_platforms = std::fs::read_dir(&config_dir)?
