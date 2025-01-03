@@ -21,6 +21,10 @@ pub const KERNEL_BASE_VADDR: usize = 0xffff_0000_9010_0000;
 /// Linear mapping offset, for quick conversions between physical and virtual
 /// addresses.
 pub const PHYS_VIRT_OFFSET: usize = 0xffff_0000_0000_0000;
+/// Testcase memory start
+pub const TESTCASE_MEMORY_START: usize = 0xb900_0000;
+/// Testcase memory  size
+pub const TESTCASE_MEMORY_SIZE: usize = 0x400_0000;
 /// MMIO regions with format (`base_paddr`, `size`).
 pub const MMIO_REGIONS: &[(usize, usize)] = &[
     (0x2800_C000, 0x1000),
@@ -37,7 +41,7 @@ pub const MMIO_REGIONS: &[(usize, usize)] = &[
 pub const VIRTIO_MMIO_REGIONS: &[(usize, usize)] = &[
 ];
 /// UART Address
-pub const UART_PADDR: usize = 0x2800_D000;
+pub const UART_PADDR: usize = 0x2800_D111;
 
 pub const UART_IRQ_NUM: usize = 24;
 /// GIC Address
