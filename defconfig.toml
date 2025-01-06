@@ -42,9 +42,9 @@ ticks-per-sec = "100"
 smp = "1"
 
 # Testcase memory start address.
-testcase-memory-start = "0"
+testcase-memory-start = "0xb9000000"
 # Testcase memory size.
-testcase-memory-size = "0"
+testcase-memory-size = "0x2000000"
 # The base address of the user heap.
 user-heap-base = "0"
 # The base address of the user stack. And the stack bottom is `user-stack-top + max-user-stack-size`.
